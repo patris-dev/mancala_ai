@@ -60,7 +60,8 @@ class MCTS():
         childrenExpanded = True
 
         # if any children are unexpanded
-        # expand random chil        children = state.children
+        # expand random child
+        children = state.children
         for s in children:
             if s.games <= 0:
                 self.expand(s)
