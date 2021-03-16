@@ -18,6 +18,7 @@ class State():
         self.board = board
         self.parent = parent
         self.children = children
+        self.play = play
         self.wins = wins
         self.games = games
 
@@ -45,38 +46,37 @@ class MCTS():
 
         # Running MCTS
         for _ in range(iterations):
-            self.select(self.root, iterations)
-
-        # TODO debugging, root should have 100 games
-        # for c in self.root.children:
-        #     print(str(c.wins) + " " + str(c.games))
+            self.select(self.root)
 
         # Returning the best play
-        bestChild = max(self.root.children, key=lambda c: c.wins/c.games)
+        bestChild = max(self.root.children, key=lambda c: c.wins /
+                        c.games if not c.board.player else 1 - (c.wins/c.games))
+        print("AI: " + str(bestChild.play))
         return bestChild.play
 
-    def select(self, state, iterations):
+    def select(self, state):
 
         # boolean flag
-        expanded = False
+        childrenExpanded = True
 
         # if any children are unexpanded
-        # expand random child
-        children = state.children
+        # expand random chil        children = state.children
         for s in children:
             if s.games <= 0:
                 self.expand(s)
-                expanded = True
+                childrenExpanded = False
                 break
-        if not expanded:
-            maxVal = 0
+        if childrenExpanded:
+            maxVal = -50000
             for s in children:
-                uc = self.ucb(state.games, state.wins, self.root.games)
+                uc = self.ucb(s.games, s.wins, state.games)
                 if uc > maxVal:
                     maxVal = uc
                     maxState = s
-
-            self.expand(maxState)
+            if len(children) != 0:
+                self.select(maxState)
+            else:
+                self.expand(state)
 
     def ucb(self, games, wins, totalGames):
 
@@ -100,23 +100,21 @@ class MCTS():
 
     def update(self, state, winner):
 
-        # winner = 1 = AI loss (+0)
-        # winner = 2 = AI win (+1)
-        # winner = -1 = draw (+0.5)
-        if winner == -1:
-            wins = 0.5
-        elif winner == 2:
-            wins = 1
-        elif winner == 1:
-            wins = 0
-
         # update all nodes in path until root is reached
         while state.parent != None:
             state.games += 1
-            if not state.board.player:
-                state.wins += wins
+            # player wins
+            if winner == 1 and state.board.player:
+                state.wins += 1
+            # AI wins
+            if winner == 2 and not state.board.player:
+                state.wins += 1
+            # draw
+            if winner == -1:
+                state.wins += 0.5
             state = state.parent
 
         # update root
         state.games += 1
-        state.wins += wins
+        if winner == 2:
+            state.wins += 1

@@ -83,7 +83,7 @@ class Board():
 
                     nPebbles -= 1
 
-            for i in range(0, 7):
+            for i in range(0, 6):
                 if nPebbles > 0:
                     if player:
                         b[i] += 1
