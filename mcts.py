@@ -48,10 +48,14 @@ class MCTS():
         for _ in range(iterations):
             self.select(self.root)
 
+        # Choosing the best play based on denominator (games played)
+        bestChild = max(self.root.children, key=lambda c: c.games)
+
         # Returning the best play
-        bestChild = max(self.root.children, key=lambda c: c.wins /
-                        c.games if not c.board.player else 1 - (c.wins/c.games))
-        print("AI: " + str(bestChild.play))
+        winrate = 100 * bestChild.wins / bestChild.games if not bestChild.board.player else 100 * (1 -
+                                                                                                   (bestChild.wins/bestChild.games))
+        print("AI: {0:d}, perceived winrate: {1:.2f}%".format(
+            bestChild.play, winrate))
         return bestChild.play
 
     def select(self, state):
@@ -70,7 +74,8 @@ class MCTS():
         if childrenExpanded:
             maxVal = -50000
             for s in children:
-                uc = self.ucb(s.games, s.wins, state.games)
+                # uc = self.ucb(s.games, s.wins, state.games)
+                uc = self.ucb1(s, state)
                 if uc > maxVal:
                     maxVal = uc
                     maxState = s
@@ -80,9 +85,16 @@ class MCTS():
                 self.expand(state)
 
     def ucb(self, games, wins, totalGames):
-
         ub = wins/games + np.sqrt(2*np.log(totalGames)/games)
         return ub
+
+    def ucb1(self, child, parent):
+        # If the child node belongs to same as parent, return the standard ucb value
+        if child.board.player == parent.board.player:
+            return child.wins/child.games + np.sqrt(2*np.log(parent.games)/child.games)
+        # If the child and parent are different, inverse the utility (winrate)
+        else:
+            return (1 - child.wins/child.games) + np.sqrt(2*np.log(parent.games)/child.games)
 
     def expand(self, state):
         # Expands a child node after selection (generate children and then run a simulation)

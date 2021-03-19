@@ -21,7 +21,7 @@ if mode == 1:
                 print("\nIllegal action")
         # AI's turn
         else:
-            action = ai.get_play(board, 10000)
+            action = ai.get_play(board, 1000)
             board = board.next_state(action)
 
     print("\nThe winner is player " + str(board.winner()) + " with a score of " +
@@ -56,5 +56,6 @@ if mode == 3:
             action = ai.get_play(board, 1000)
             board = board.next_state(action)
 
+    print(board)
     print("\nThe winner is player " + str(board.winner()) + " with a score of " +
           str(sum(board.aSide)) + " to " + str(sum(board.bSide)))

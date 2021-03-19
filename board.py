@@ -28,11 +28,27 @@ class Board():
     # Prints the board in colors
     def print(self):
         if (self.player):
-            print(colored("\n{0:<3}".format(self.bSide[6]), 'red', attrs=['bold']), colored("{1:<3} {2:<3} {3:<3} {4:<3} {5:<3} {6:<3}".format(*self.bSide[::-1]), 'red'), colored(
-                "\n    {0:<3} {1:<3} {2:<3} {3:<3} {4:<3} {5:<3}".format(*self.aSide), 'blue'), colored("{0:<3}".format(self.aSide[6]), 'blue', attrs=['bold']), "\nPlayer 1's turn")
+            print(colored("\n{0:<3}".format(self.bSide[6]), 'red', attrs=['bold']),
+                  colored("{1:<3} {2:<3} {3:<3} {4:<3} {5:<3} {6:<3}".format(
+                      *self.bSide[::-1]), 'red'),
+                  colored("\n    {0:<3} {1:<3} {2:<3} {3:<3} {4:<3} {5:<3}".format(
+                      *self.aSide), 'blue'),
+                  colored("{0:<3}".format(
+                      self.aSide[6]), 'blue', attrs=['bold']),
+                  colored("\n    {0:<3} {1:<3} {2:<3} {3:<3} {4:<3} {5:<3}".format(
+                      *range(6)), 'white', attrs=['dark']),
+                  "\nPlayer 1's turn")
         else:
-            print(colored("\n{0:<3}".format(self.aSide[6]), 'blue', attrs=['bold']), colored("{1:<3} {2:<3} {3:<3} {4:<3} {5:<3} {6:<3}".format(*self.aSide[::-1]), 'blue'), colored(
-                "\n    {0:<3} {1:<3} {2:<3} {3:<3} {4:<3} {5:<3}".format(*self.bSide), 'red'), colored("{0:<3}".format(self.bSide[6]), 'red', attrs=['bold']), "\nPlayer 2's turn")
+            print(colored("\n{0:<3}".format(self.aSide[6]), 'blue', attrs=['bold']),
+                  colored("{1:<3} {2:<3} {3:<3} {4:<3} {5:<3} {6:<3}".format(
+                      *self.aSide[::-1]), 'blue'),
+                  colored("\n    {0:<3} {1:<3} {2:<3} {3:<3} {4:<3} {5:<3}".format(
+                      *self.bSide), 'red'),
+                  colored("{0:<3}".format(
+                      self.bSide[6]), 'red', attrs=['bold']),
+                  colored("\n    {0:<3} {1:<3} {2:<3} {3:<3} {4:<3} {5:<3}".format(
+                      *range(6)), 'white', attrs=['dark']),
+                  "\nPlayer 2's turn")
 
     # Returns current player number
     def current_player(self):
