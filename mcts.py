@@ -32,10 +32,10 @@ class State():
 
 class MCTS():
 
-    def __init__(self):
+    def __init__(self, player):
+        self.player = player
         self.root = None
-        # Takes an instance of Board and optionally som keyword arguments.
-        # Initializes the list of game states and the statistics tables.
+        # Takes the player number.
 
     def get_play(self, board, iterations):
         # Causes AI to calculate the best move from the current game state and returns it.
@@ -52,8 +52,8 @@ class MCTS():
         bestChild = max(self.root.children, key=lambda c: c.games)
 
         # Returning the best play
-        winrate = 100 * bestChild.wins / bestChild.games if not bestChild.board.player else 100 * (1 -
-                                                                                                   (bestChild.wins/bestChild.games))
+        winrate = 100 * bestChild.wins / bestChild.games if bestChild.board.current_player() == self.player else 100 * (1 -
+                                                                                                                        (bestChild.wins/bestChild.games))
         print("AI: {0:d}, perceived winrate: {1:.2f}%".format(
             bestChild.play, winrate))
         return bestChild.play
@@ -116,11 +116,11 @@ class MCTS():
         # update all nodes in path until root is reached
         while state.parent != None:
             state.games += 1
-            # player wins
-            if winner == 1 and state.board.player:
+            # opponent wins
+            if winner != self.player and state.board.current_player() != self.player:
                 state.wins += 1
             # AI wins
-            if winner == 2 and not state.board.player:
+            if winner == self.player and state.board.current_player() == self.player:
                 state.wins += 1
             # draw
             if winner == -1:
