@@ -62,21 +62,18 @@ class MCTS():
 
     def select(self, state):
 
-        # boolean flag
+        # If any children are unexpanded, expand child
         childrenExpanded = True
-
-        # if any children are unexpanded
-        # expand random child
         children = state.children
         for s in children:
             if s.games <= 0:
                 self.expand(s)
                 childrenExpanded = False
                 break
+        # If all children were already expanded, move on to UCB
         if childrenExpanded:
             maxVal = -50000
             for s in children:
-                # uc = self.ucb(s.games, s.wins, state.games)
                 uc = self.ucb1(s, state)
                 if uc > maxVal:
                     maxVal = uc
@@ -101,7 +98,7 @@ class MCTS():
         self.update(state, winner)
 
     def run_simulation(self, board):
-        # Plays out a random game from the current position, returns the winning player.
+        # Plays out a random game from the current position, returns the winning player
         sim = Board(board.aSide.copy(), board.bSide.copy(), board.player)
         while sim.winner() == 0:
             plays = sim.legal_plays()
@@ -111,21 +108,21 @@ class MCTS():
 
     def update(self, state, winner):
 
-        # update all nodes in path until root is reached
+        # Update all nodes in path until root is reached
         while state.parent != None:
             state.games += 1
-            # opponent wins
+            # Opponent wins
             if winner != self.player and state.board.current_player() != self.player:
                 state.wins += 1
             # AI wins
             elif winner == self.player and state.board.current_player() == self.player:
                 state.wins += 1
-            # draw
+            # Draw
             elif winner == -1:
                 state.wins += 0.5
             state = state.parent
 
-        # update root
+        # Update root
         state.games += 1
         if winner == self.player:
             state.wins += 1
