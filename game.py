@@ -46,7 +46,7 @@ if mode == 3:
     ai = MCTS(2)
     p1w = 0
     p2w = 0
-    for _ in range(100):
+    for _ in range(10):
         board = Board([4, 4, 4, 4, 4, 4, 0], [4, 4, 4, 4, 4, 4, 0], True)
         while (board.winner() == 0):
             board.print()
@@ -78,7 +78,7 @@ if mode == 4:
     ai2 = MCTS(2)
     p1w = 0
     p2w = 0
-    for _ in range(100):
+    for _ in range(10):
         board = Board([4, 4, 4, 4, 4, 4, 0], [4, 4, 4, 4, 4, 4, 0], True)
         while (board.winner() == 0):
             board.print()
