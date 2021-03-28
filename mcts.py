@@ -54,6 +54,12 @@ class MCTS():
         # Returning the best play
         winrate = 100 * bestChild.wins / bestChild.games if bestChild.board.current_player() == self.player else 100 * (1 -
                                                                                                                         (bestChild.wins/bestChild.games))
+
+        print("\n{:f} {:f}".format(self.root.wins, self.root.games))
+
+        for child in self.root.children:
+            print("{:f} {:f}".format(child.wins, child.games))
+
         print("AI: {0:d}, perceived winrate: {1:.2f}%".format(
             bestChild.play, winrate))
         return bestChild.play
@@ -116,14 +122,14 @@ class MCTS():
             if winner != self.player and state.board.current_player() != self.player:
                 state.wins += 1
             # AI wins
-            if winner == self.player and state.board.current_player() == self.player:
+            elif winner == self.player and state.board.current_player() == self.player:
                 state.wins += 1
             # draw
-            if winner == -1:
+            elif winner == -1:
                 state.wins += 0.5
             state = state.parent
 
         # update root
         state.games += 1
-        if winner == 2:
+        if winner == self.player:
             state.wins += 1
