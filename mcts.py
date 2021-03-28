@@ -84,10 +84,6 @@ class MCTS():
             else:
                 self.expand(state)
 
-    def ucb(self, games, wins, totalGames):
-        ub = wins/games + np.sqrt(2*np.log(totalGames)/games)
-        return ub
-
     def ucb1(self, child, parent):
         # If the child node belongs to same as parent, return the standard ucb value
         if child.board.player == parent.board.player:
