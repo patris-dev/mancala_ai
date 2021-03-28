@@ -8,7 +8,7 @@ strength = 1000
 mode = int(
     input("Input 1 for player vs AI \ninput 2 for player vs player \ninput 3 for random vs AI \ninput 4 for AI vs AI: "))
 
-# Singleplayer: playing against AI
+# Player vs AI
 if mode == 1:
     ai = MCTS(2)
     while (board.winner() == 0):
@@ -28,7 +28,7 @@ if mode == 1:
     print("\nThe winner is player " + str(board.winner()) + " with a score of " +
           str(sum(board.aSide)) + " to " + str(sum(board.bSide)))
 
-# Multiplayer: playing against yourself or a friend locally
+# Player vs Player
 elif mode == 2:
     while (board.winner() == 0):
         board.print()
@@ -41,7 +41,7 @@ elif mode == 2:
     print("\nThe winner is player " + str(board.winner()) + " with a score of " +
           str(sum(board.aSide)) + " to " + str(sum(board.bSide)))
 
-# Random: random against AI
+# AI vs Random
 if mode == 3:
     ai = MCTS(2)
     p1w = 0
@@ -50,7 +50,7 @@ if mode == 3:
         board = Board([4, 4, 4, 4, 4, 4, 0], [4, 4, 4, 4, 4, 4, 0], True)
         while (board.winner() == 0):
             board.print()
-            # Player's turn
+            # Random's turn
             if board.player:
                 plays = board.legal_plays()
                 action = random.choice(plays)
@@ -82,11 +82,11 @@ if mode == 4:
         board = Board([4, 4, 4, 4, 4, 4, 0], [4, 4, 4, 4, 4, 4, 0], True)
         while (board.winner() == 0):
             board.print()
-            # Player's turn
+            # AI 1's turn
             if board.current_player() == 1:
                 action = ai1.get_play(board, strength)
                 board = board.next_state(action)
-            # AI's turn
+            # AI 2's turn
             else:
                 action = ai2.get_play(board, strength)
                 board = board.next_state(action)

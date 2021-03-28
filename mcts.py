@@ -5,6 +5,7 @@ import random
 
 class State():
 
+    # Initializing state (0 wins and games by default)
     def __init__(self, board, parent, children, play):
         self.set(board, parent, children, play, 0, 0)
 
@@ -22,7 +23,7 @@ class State():
         self.wins = wins
         self.games = games
 
-    # generates children for current state
+    # Generates children for current state
     def generate_children(self):
         plays = self.board.legal_plays()
         children = [State(self.board.next_state(play), self, [], play)
@@ -32,13 +33,13 @@ class State():
 
 class MCTS():
 
+    # Initializes AI with their dedicated player number (1 or 2)
     def __init__(self, player):
         self.player = player
         self.root = None
-        # Takes the player number.
 
+    # Causes AI to calculate the best move from the current game state and returns it.
     def get_play(self, board, iterations):
-        # Causes AI to calculate the best move from the current game state and returns it.
 
         # Root node
         self.root = State(board, None, [], None)

@@ -11,12 +11,13 @@ class Board():
     def __init__(self, aSide, bSide, player):
         self.set(aSide, bSide, player)
 
+    # Setting board variables
     def set(self, aSide, bSide, player):
         self.aSide = aSide
         self.bSide = bSide
         self.player = player
 
-    # Representing the board as a string
+    # Representing the board as a string (unused)
     def __repr__(self):
         if (self.player):
             return "\n{0:<3} {1:<3} {2:<3} {3:<3} {4:<3} {5:<3} {6:<3}\n    {7:<3} {8:<3} {9:<3} {10:<3} {11:<3} {12:<3} {13:<3}\nPlayer 1's turn".format(
@@ -50,10 +51,11 @@ class Board():
                       *range(6)), 'white', attrs=['dark']),
                   "\nPlayer 2's turn")
 
-    # Returns current player number
+    # Returns current player number (1 or 2)
     def current_player(self):
         return 1 if self.player else 2
 
+    # Returns board state after a specific play
     def next_state(self, play):
         player = self.player
         a = self.aSide.copy()
@@ -115,6 +117,7 @@ class Board():
 
         return Board(a, b, not player)
 
+    # Returns array of numbers corresponding to legal plays
     def legal_plays(self):
         # figure out which side to consider
         if self.player:
@@ -129,10 +132,11 @@ class Board():
                 legal_plays.append(i)
         return legal_plays
 
-    # -1 tie
-    # 0 not a terminal state
-    # 1 player A
-    # 2 player B
+    # Returns winner:
+    # -1 - tie
+    #  0 - not a terminal state
+    #  1 - player 1
+    #  2 - player 2
     def winner(self):
         if sum(self.aSide[:6]) == 0 or sum(self.bSide[:6]) == 0:
             self.aSide[6] += sum(self.aSide[:6])
