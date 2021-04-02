@@ -111,15 +111,16 @@ class MCTS():
         # Update all nodes in path until root is reached
         while state.parent != None:
             state.games += 1
+            # Draw
+            if winner == -1:
+                state.wins += 0.5
             # Opponent wins
-            if winner != self.player and state.board.current_player() != self.player:
+            elif winner != self.player and state.board.current_player() != self.player:
                 state.wins += 1
             # AI wins
             elif winner == self.player and state.board.current_player() == self.player:
                 state.wins += 1
-            # Draw
-            elif winner == -1:
-                state.wins += 0.5
+
             state = state.parent
 
         # Update root
